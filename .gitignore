@@ -3,6 +3,6 @@ api/.classpath
 api/.gradle
 api/.settings
 api/bin
-ui/app/bower_components
-ui/node_modules
+ui-app/node_modules
+ui-app/app/bower_components
 .DS_Store
