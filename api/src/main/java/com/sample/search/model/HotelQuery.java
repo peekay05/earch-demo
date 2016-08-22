@@ -6,6 +6,12 @@ public class HotelQuery {
 	
 	private String city;
 	
+	private boolean sort;
+	
+	private String sortField;
+	
+	public boolean sortDesc;
+	
 	private int pageNo;
 	
 	private int pageSize;
@@ -54,6 +60,30 @@ public class HotelQuery {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public boolean isSort() {
+		return sort;
+	}
+
+	public void setSort(boolean sort) {
+		this.sort = sort;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public void setSortField(String sortField) {
+		this.sortField = sortField;
+	}
+
+	public boolean isSortDesc() {
+		return sortDesc;
+	}
+
+	public void setSortDesc(boolean sortDesc) {
+		this.sortDesc = sortDesc;
 	}
 	
 	

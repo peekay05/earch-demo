@@ -2,11 +2,9 @@ package com.sample.search.model;
 
 //ID,NAME,CITY,COUNTRY,STARS,BOOKINGS
 
-public class Hotel {
+public class Hotel extends Match{
 
-	private long id;
 	
-	private String name;
 	
 	private String city;
 	
@@ -18,9 +16,8 @@ public class Hotel {
 
 	
 	public Hotel(long id, String name, String city, String country, double stars, int bookings) {
-		super();
-		this.id = id;
-		this.name = name;
+		super( id, name);
+		
 		this.city = city;
 		this.country = country;
 		this.stars = stars;

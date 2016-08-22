@@ -2,6 +2,8 @@ package com.sample.search.app;
 
 import java.net.URLEncoder;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,22 +13,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sample.hotelsearch.bycity.HotelSearcher;
 import com.sample.search.app.ratelimiter.KeyManager;
 import com.sample.search.app.ratelimiter.KeyStatus;
+import com.sample.search.indexing.HotelDb1Indexer;
+import com.sample.search.indexing.HotelDb2Indexer;
+import com.sample.search.model.HotelQuery;
+import com.sample.search.searcher.HotelDB2Searcher;
 
 @RestController
 @RequestMapping(path="/hotelsearch")
-public class HotelSearchResource2 {
+public class HotelDB2SearchResource {
 
 	@Autowired
-	HotelSearcher hotelSearcher;
+	HotelDB2Searcher hotelDB2Searcher;
 	
 	 
 	@Autowired
 	KeyManager keyManager;
 	
+	@Autowired
+	HotelDb2Indexer hotelDb2Indexer;
 	
+ 
+	@PostConstruct
+	public void init() throws Exception{
+		hotelDb2Indexer.buildIndex();
+		hotelDB2Searcher.initSearcher();
+	}
 	
 	@RequestMapping(value = "/bycity/{city}", method = RequestMethod.GET)
 	public String search(@PathVariable String city, 
@@ -40,7 +53,8 @@ public class HotelSearchResource2 {
 		switch (keyStatus) {
 		case ACTIVE:
 			try {
-				response =  toJsonP(hotelSearcher.searchByCity(city, sortByPrice, desc), "");
+				HotelQuery hotelQuery = new HotelQuery("", city);
+				response =  toJsonP(hotelDB2Searcher.search(hotelQuery ), "");
 			} catch (Exception e) {
 				throw new Exception("An error has occured");
 			} 

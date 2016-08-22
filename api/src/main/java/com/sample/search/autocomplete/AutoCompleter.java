@@ -49,11 +49,12 @@ public final class AutoCompleter {
 	    private IndexReader autoCompleteReader;
 
 	    private IndexSearcher autoCompleteSearcher;
+	    
+	    private FSDirectory mainIndexDir;
 
 	    public AutoCompleter(String mainIndexDir, String autocompleteIndexDir) throws IOException {
 	    	this.autoCompleteDirectory = FSDirectory.open(Paths.get(autocompleteIndexDir)); 
-	    	reIndex(FSDirectory.open(Paths.get(mainIndexDir)), SOURCE_WORD_FIELD);
-	    	reOpenReader();
+	    	this.mainIndexDir = FSDirectory.open(Paths.get(mainIndexDir)); 
 	    }
 
 	    public AutoCompleteResult suggestTermsFor(String term) throws IOException {
@@ -75,14 +76,12 @@ public final class AutoCompleter {
 	    	return doc.get(SOURCE_WORD_FIELD).trim() ; 
 		}
 	   
-	    public void reIndex(Directory sourceDirectory , String fieldToAutocomplete)
+	    public void buildIndex()
 	    		throws CorruptIndexException, IOException { 
-			DirectoryReader sourceReader = DirectoryReader.open(sourceDirectory); 
-			 
-			
-
+	    
+			DirectoryReader sourceReader = DirectoryReader.open( mainIndexDir); 
 	    	LuceneDictionary dict = new LuceneDictionary(sourceReader,
-	    			fieldToAutocomplete);
+	    			SOURCE_WORD_FIELD);
  
 			IndexWriterConfig iwConf = new IndexWriterConfig(new AutocompleteAnalyzer());
 			iwConf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
@@ -109,7 +108,7 @@ public final class AutoCompleter {
 	    					"This should never happen in Lucene 2.3.2"); 
 	    		} else { 
 	    			wordsMap.put(word, sourceReader.docFreq(new Term(
-	    					fieldToAutocomplete, word)));
+	    					SOURCE_WORD_FIELD, word)));
 	    		}
 	    		byteRef = inputIterator.next();
 	    	}
@@ -140,7 +139,7 @@ public final class AutoCompleter {
 
 	    public static void main(String[] args) throws Exception {
 	    	AutoCompleter autocomplete = new AutoCompleter("indexDir2", "taDir");
-	    	autocomplete.reIndex(FSDirectory.open(Paths.get("indexDir2")), "name");
+	    	autocomplete.buildIndex();
 	    	String term = "suk";
 	    	System.out.println( autocomplete.suggestTermsFor(term)); 
 	    }

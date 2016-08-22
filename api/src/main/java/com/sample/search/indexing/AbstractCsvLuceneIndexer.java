@@ -13,18 +13,28 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class AbstractCsvLuceneIndexer {
 
 	 
 
-	public AbstractCsvLuceneIndexer( ){ 
-		 
+	Logger logger = LoggerFactory.getLogger(AbstractCsvLuceneIndexer.class);
+	
+	private String indexDir;
+	
+	private String dataDir;
+	 
+	public AbstractCsvLuceneIndexer(String indexDir, String dataDir  ){ 
+		 this.indexDir = indexDir;
+		 this.dataDir = dataDir;
 	}	 
 
-	public void buildIndex(Directory directory, String dataDir, boolean indexNGrams) throws Exception {
+	private void buildIndex(Directory directory, String dataDir, boolean indexNGrams) throws Exception {
 
+		logger.info("Reading records from the file: " +  dataDir);
 		FileReader fileReader =null;;
 		IndexWriter indexWriter = null;
 
@@ -45,6 +55,7 @@ public abstract class AbstractCsvLuceneIndexer {
 					docCount++;
 				} catch (Exception e) {
 					pasreErrorCount++;
+					logger.error("Error in parsing record {}. Nested exception is ", csvRecord, e.getMessage());
 				}
 				
 			}
@@ -53,7 +64,7 @@ public abstract class AbstractCsvLuceneIndexer {
 		}
 		
 		finally{ 
-			System.out.println(String.format("%d Documents Processed. %d Errors Found", docCount, pasreErrorCount));
+			logger.info(String.format("%d Documents Processed. %d Errors Found", docCount, pasreErrorCount));
 			try {
 				indexWriter.commit();
 				if(fileReader!=null)
@@ -63,20 +74,27 @@ public abstract class AbstractCsvLuceneIndexer {
 				if(br != null)
 					br.close();	
 
-			} catch (IOException e) { 
+			} catch (IOException e) {
+				logger.error("Error in indexing. nested exception is "+ e.getMessage());
 				e.printStackTrace();
 			}
 		} 
 	}
 
-	public void buildIndex(String indexDir, String dataDir, boolean indexNGrams) throws Exception {
+	public void buildIndex() throws Exception {
 		deleteDir(new File(indexDir));
 		Directory fsDir  = FSDirectory.open(Paths.get(indexDir)); 
-		buildIndex(fsDir,   dataDir,   indexNGrams);
+		buildIndex(fsDir,   dataDir,   true);
 	}
 
 	protected abstract Document parseRecord(String record);
 	
+	
+	/**
+	 * Rcursively delete the index directory
+	 * @param file
+	 * @throws IOException
+	 */
 	private void deleteDir(File file) throws IOException{
 		if(file.exists()){
 			if(file.isDirectory()){

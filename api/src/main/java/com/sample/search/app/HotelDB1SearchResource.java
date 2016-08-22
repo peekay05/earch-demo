@@ -3,6 +3,8 @@ package com.sample.search.app;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,25 +15,37 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.search.autocomplete.AutoCompleter;
-import com.sample.search.engines.SearchEngine;
+import com.sample.search.indexing.HotelDb1Indexer;
 import com.sample.search.model.AutoCompleteResult;
 import com.sample.search.model.HotelQuery;
+import com.sample.search.searcher.HotelDB1Searcher;
 
 @RestController
-public class HotelSearchResource {
+public class HotelDB1SearchResource {
 
 	@Autowired
-	SearchEngine searchEngine;
+	HotelDB1Searcher hotelDB1Searcher;
 	
 	@Autowired
 	AutoCompleter autoCompleter;
+	
+	@Autowired
+	HotelDb1Indexer hotelDb1Indexer;
+
+
+	@PostConstruct  
+	public void init() throws Exception{
+		hotelDb1Indexer.buildIndex();
+		autoCompleter.buildIndex();
+		hotelDB1Searcher.initSearcher();
+	}
 	
 	@RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
 	public String search(@PathVariable String query, 
 					@RequestParam(defaultValue="") String city, @RequestParam(defaultValue="") String callback ){
 		HotelQuery hotelQuery = new HotelQuery(query, ""); 
 		try {
-			return  toJsonP(searchEngine.search(hotelQuery), callback);
+			return  toJsonP(hotelDB1Searcher.search(hotelQuery), callback);
 		} catch (Exception e) {
 			return "";
 		} 
