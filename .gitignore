@@ -1,0 +1,8 @@
+api/indexDir
+api/.classpath
+api/.gradle
+api/.settings
+api/bin
+ui/app/bower_components
+ui/node_modules
+.DS_Store
