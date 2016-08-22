@@ -26,8 +26,8 @@ public class HotelDb2Indexer extends AbstractCsvLuceneIndexer {
 		return doc;
 	}
  
-	public static void main(String[] args) throws Exception{
-		HotelDb2Indexer indexer = new HotelDb2Indexer("indexDir/hoteldb2" , "dataDir/hoteldb.csv" );
-		indexer.buildIndex();
-	}
+//	public static void main(String[] args) throws Exception{
+//		HotelDb2Indexer indexer = new HotelDb2Indexer("indexDir/hoteldb2" , "dataDir/hoteldb.csv" );
+//		indexer.buildIndex();
+//	}
 }

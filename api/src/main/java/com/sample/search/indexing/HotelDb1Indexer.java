@@ -30,8 +30,8 @@ public class HotelDb1Indexer extends AbstractCsvLuceneIndexer {
 		return doc;
 	}
 
-	public static void main(String[] args) throws Exception{ 
-		HotelDb1Indexer  luceneIndexer  = new HotelDb1Indexer("indexDir/hoteldb2", "dataDir/hotels.csv");
-		luceneIndexer.buildIndex();
-	}
+//	public static void main(String[] args) throws Exception{ 
+//		HotelDb1Indexer  luceneIndexer  = new HotelDb1Indexer("indexDir/hoteldb2", "dataDir/hotels.csv");
+//		luceneIndexer.buildIndex();
+//	}
 }

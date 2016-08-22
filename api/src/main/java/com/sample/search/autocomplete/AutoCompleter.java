@@ -136,12 +136,6 @@ public final class AutoCompleter {
 	    	}
 	    	autoCompleteSearcher = new IndexSearcher(autoCompleteReader);
 	    }
-
-	    public static void main(String[] args) throws Exception {
-	    	AutoCompleter autocomplete = new AutoCompleter("indexDir2", "taDir");
-	    	autocomplete.buildIndex();
-	    	String term = "suk";
-	    	System.out.println( autocomplete.suggestTermsFor(term)); 
-	    }
+   
 
 }

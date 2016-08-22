@@ -1,9 +1,9 @@
 package com.sample.hotelsearch.bycity;
 
-public class Hotel2 implements Comparable<Hotel2>{
+import com.sample.search.model.Match;
 
-	private long id;
-	
+public class Hotel2 extends Match implements Comparable<Hotel2>{
+ 	
 	private String city;
 	
 	private Integer price;
@@ -13,8 +13,7 @@ public class Hotel2 implements Comparable<Hotel2>{
 	
 
 	public Hotel2(long id, String city, int price, String type) {
-		super();
-		this.id = id;
+		super(id, "");
 		this.city = city;
 		this.price = price;
 		this.type = type;
