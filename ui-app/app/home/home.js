@@ -31,7 +31,7 @@
 
 	    function fetchMatches2(prefix) { 
 	    	 var deferred = $q.defer()
-	    	 var url =  "http://localhost:9090/autocomplete/" + prefix +"?callback=JSON_CALLBACK"
+	    	 var url =  "http://localhost:9090/api1/autocomplete/" + prefix +"?callback=JSON_CALLBACK"
  			 $http.jsonp(url).success(function(data){ 
  			 	deferred.resolve(data.matches);
  			 });
@@ -39,7 +39,7 @@
 	    }
 
 	    function searchHotels(searchText) {
-	    	 var url =  "http://localhost:9090/search/" +  searchText +"?callback=JSON_CALLBACK"
+	    	 var url =  "http://localhost:9090/api1/search/" +  searchText +"?callback=JSON_CALLBACK"
 	    	 self.searchResults.length = 0;
  			 $http.jsonp(url).success(function(data){
  			 	angular.forEach(data.hotels, function(value) {

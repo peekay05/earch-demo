@@ -34,6 +34,22 @@ Gradle should be installed in the system to build the JAR
    searchapp.hotelDb2IndexDir=indexDir/hoteldb2
    searchapp.autoCompleteIndexDir=indexDir/autoComplete
     
+    Accessing the services
+    1. API-1
+       http://localhost:9090/api1/search/{search_term}
+       http://localhost:9090/api1/autocomplete/{prefix}
+    2. API-2
+       http://localhost:9090/api2/bycity/{city}?apikey={apikey}
+       refer the keyfile for valid keys
     
-    
-    Setting up the UI 
+ Setting up the UI 
+ 
+ The UI uses Angular JS for the features. It runs on nodejs server. 
+ 
+ To start the UI
+ 
+ 1. Navigate to the ui-app folder
+ 2. Execute: npm install  
+    This would download all necessary packages
+ 3. Execute: npm start 
+    This would start the application in port 8000 

@@ -31,15 +31,13 @@ public class HotelDB1Searcher extends AbstractSearcher{
 
 	@Override
 	protected Match fromLuceneDoc(Document doc) {
-		long id = 0;
-		String name = "";
-		String city = "";
-		String country = "";
-		id = 0;// Long.parseLong( doc.getField("id").stringValue() );
-		name = doc.get("name").trim();
-		city = doc.get("city").trim(); 
-		city = doc.get("country").trim();  
-		return new Hotel(id, name, city, country, 0, 0);
+		long id = Long.parseLong( doc.getField("id").stringValue() );;
+		String name = doc.get("name").trim();
+		String city = doc.get("city").trim(); 
+		String country =  doc.get("country").trim(); 
+		int rating = Integer.parseInt( doc.get("rating").trim()); 
+		int bookings = Integer.parseInt( doc.get("bookings").trim()); 
+		return new Hotel(id, name, city, country, rating, bookings);
 	}
 
 }
