@@ -7,24 +7,23 @@ import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.DisjunctionMaxQuery;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.IOContext;
 import org.apache.lucene.store.RAMDirectory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.sample.search.model.Hotel;
 import com.sample.search.model.HotelQuery;
 import com.sample.search.model.Match;
-import com.sample.search.model.SearchResult;
 
 public abstract class AbstractSearcher implements Searcher{
 
+	Logger logger = LoggerFactory.getLogger(getClass());
+	
 	String indexDir;
 
 	FSDirectory fsDir;
@@ -53,17 +52,11 @@ public abstract class AbstractSearcher implements Searcher{
 		try { 
 			 
 			TopDocs topDocs = searcher.search(buildLuceneQuery(hquery), 10); 
-			Document doc = null; 
-			long id = 0;
-			String name = "";
-			String city = "";
-			String country = "";
-			for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
-				doc = searcher.doc(scoreDoc.doc); 
-				matches.add( fromLuceneDoc(doc)) ;
+			for (ScoreDoc scoreDoc : topDocs.scoreDocs) { 
+				matches.add( fromLuceneDoc(searcher.doc(scoreDoc.doc))) ;
 			} 
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			logger.error("Problem in querying the luecene index for query {}. Nested exception is {} ", hquery.getKeyword(), e.getMessage());
 		}
 
 		return matches;

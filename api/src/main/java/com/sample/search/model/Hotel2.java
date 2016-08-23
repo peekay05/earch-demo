@@ -1,6 +1,4 @@
-package com.sample.hotelsearch.bycity;
-
-import com.sample.search.model.Match;
+package com.sample.search.model;
 
 public class Hotel2 extends Match implements Comparable<Hotel2>{
  	

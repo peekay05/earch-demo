@@ -31,16 +31,12 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.BytesRef;
 
 import com.sample.search.model.AutoCompleteResult;
-import com.sample.search.model.Hotel;
-import com.sample.search.utils.DocMapper;
 
 public final class AutoCompleter { 
 
 	    public static final String GRAMMED_WORDS_FIELD = "words";
 
-	    public static final String SOURCE_WORD_FIELD = "keywords_untok";
-	    
-	    private static final String ID_FIELD = "id";
+	    public static final String SOURCE_WORD_FIELD = "keywords_untok"; 
 
 	    private static final String COUNT_FIELD = "count"; 
 
@@ -58,10 +54,8 @@ public final class AutoCompleter {
 	    }
 
 	    public AutoCompleteResult suggestTermsFor(String term) throws IOException {
-	    	// get the top 5 terms for query
-	    	Query query = new TermQuery(new Term(GRAMMED_WORDS_FIELD, term));
-//	    	Sort sort = new Sort(new SortField(COUNT_FIELD, Type.INT));
-
+	     
+	    	Query query = new TermQuery(new Term(GRAMMED_WORDS_FIELD, term)); 
 	    	Sort sort = new Sort();
 	    	TopDocs docs = autoCompleteSearcher.search(query,  10, sort);
 	    	List<String> suggestions = new ArrayList<String>();

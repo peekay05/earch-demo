@@ -15,13 +15,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sample.search.app.ratelimiter.KeyManager;
 import com.sample.search.app.ratelimiter.KeyStatus;
-import com.sample.search.indexing.HotelDb1Indexer;
 import com.sample.search.indexing.HotelDb2Indexer;
 import com.sample.search.model.HotelQuery;
 import com.sample.search.searcher.HotelDB2Searcher;
 
 @RestController
-@RequestMapping(path="/hotelsearch")
+@RequestMapping(path="/api2")
 public class HotelDB2SearchResource {
 
 	@Autowired

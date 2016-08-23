@@ -21,6 +21,7 @@ import com.sample.search.model.HotelQuery;
 import com.sample.search.searcher.HotelDB1Searcher;
 
 @RestController
+@RequestMapping(path="/api1")
 public class HotelDB1SearchResource {
 
 	@Autowired
@@ -42,7 +43,8 @@ public class HotelDB1SearchResource {
 	
 	@RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
 	public String search(@PathVariable String query, 
-					@RequestParam(defaultValue="") String city, @RequestParam(defaultValue="") String callback ){
+					@RequestParam(defaultValue="") String city, 
+					@RequestParam(defaultValue="") String callback ){
 		HotelQuery hotelQuery = new HotelQuery(query, ""); 
 		try {
 			return  toJsonP(hotelDB1Searcher.search(hotelQuery), callback);

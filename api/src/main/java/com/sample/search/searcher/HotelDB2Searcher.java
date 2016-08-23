@@ -7,7 +7,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 
-import com.sample.hotelsearch.bycity.Hotel2;
+import com.sample.search.model.Hotel2;
 import com.sample.search.model.HotelQuery;
 import com.sample.search.model.Match;
 
