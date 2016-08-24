@@ -1,39 +1,57 @@
-<div ng-controller="HomeCtrl as ctrl" layout="column" ng-cloak>
-	<div>
-	  <md-content layout-padding layout="column">
-	    <form ng-submit="$event.preventDefault()">
-	      <md-autocomplete
-	          ng-disabled="ctrl.isDisabled"
-	          md-no-cache="ctrl.noCache"
-	          md-selected-item="ctrl.selectedItem"
-	          md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-	          md-search-text="ctrl.searchText"
-	          md-selected-item-change="ctrl.selectedItemChange(item)"
-	          md-items="item in ctrl.fetchMatches2(ctrl.searchText)"
-	          md-item-text="item"
-	          md-min-length="0"
-	          placeholder="Search for Hotel"
-	          md-menu-class="autocomplete-custom-template">
-	        <md-item-template>
-	          <span class="item-title">
-	            <md-icon md-svg-icon="img/icons/octicon-repo.svg"></md-icon>
-	            <span> {{item}} </span>,
-	          </span>
-	           
-	        </md-item-template>
-	      </md-autocomplete>
-	    </form>
-	  </md-content>
-	  <button ng-click="ctrl.searchHotels(ctrl.searchText)">Search</button>
-  	</div>
-  	<div>
-  		<h3> Showing results for {{   ctrl.searchText }} </h3>
-  		<div ng-repeat="result in ctrl.searchResults">
-  			<div><label>name: {{ result.name }}</label></div>
-  			<div><label>city: {{ result.city }}</label></div>
-  			<div><label>country: {{ result.country }}</label></div>
-  			<div><label>rating: {{ result.rating }}</label></div>
-  			<div><label>bookings: {{ result.booking }}</label></div>
-  		</div>
-  	</div>
-</div>
+
+<div class="row">
+	<div class="col-md-1">
+	</div>
+	<div class="col-md-10">
+		<div ng-controller="HomeCtrl as ctrl" layout="column" ng-cloak>
+			<section class="header">
+				<div class="row">
+					<div class="col-md-6">
+					  <md-content layout-padding layout="column">
+					    <form ng-submit="$event.preventDefault()">
+					      <md-autocomplete
+					          ng-disabled="ctrl.isDisabled"
+					          md-no-cache="ctrl.noCache"
+					          md-selected-item="ctrl.selectedItem"
+					          md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+					          md-search-text="ctrl.searchText"
+					          md-selected-item-change="ctrl.selectedItemChange(item)"
+					          md-items="item in ctrl.fetchMatches2(ctrl.searchText)"
+					          md-item-text="item"
+					          md-min-length="0"
+					          placeholder="Search for Hotel"
+					          md-menu-class="autocomplete-custom-template">
+					        <md-item-template>
+					          <span class="item-title">
+					            <md-icon md-svg-icon="img/icons/octicon-repo.svg"></md-icon>
+					            <span> {{item}} </span>,
+					          </span>
+					           
+					        </md-item-template>
+					      </md-autocomplete>
+					    </form>
+					  </md-content>
+				</div>
+				<div class="col-md-6">
+				  <button ng-click="ctrl.searchHotels(ctrl.searchText)">Search</button>
+				</div>
+			</div>
+		  	</section>
+
+		  	<section ng-show ="ctrl.showResultSection">
+
+		  		<label> Showing results for {{   ctrl.searchText }} </label>
+		  		<ol>
+			  		<li  class="row" ng-repeat="result in ctrl.searchResults">
+			  			<div><label>Name: </label>{{ result.name }}</div>
+			  			<div><label>City: </label>{{ result.city }}</div>
+			  			<div><label>Country: </label>{{ result.country }}</label></div>
+			  			<div><label>Rating: </label>{{ result.stars }}</label></div>
+			  			<div><label>Bookings: </label>{{ result.booking }}</label></div>
+			  		</li>
+			  	</ol>
+		  	</section>
+		</div>
+
+	</div>
+</div> 

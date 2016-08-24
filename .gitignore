@@ -5,4 +5,5 @@ api/.settings
 api/bin
 ui-app/node_modules
 ui-app/app/bower_components
+ui-app/bower_components
 .DS_Store

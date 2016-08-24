@@ -18,6 +18,7 @@
 	    self.searchTextChange   = searchTextChange;
 	    self.fetchMatches2   = fetchMatches2;
 	    self.searchHotels = searchHotels;
+	    self.showResultSection = true;
 	    // ******************************
 	    // Internal methods
 	    // ******************************
@@ -34,6 +35,7 @@
 	    	 var url =  "http://localhost:9090/api1/autocomplete/" + prefix +"?callback=JSON_CALLBACK"
  			 $http.jsonp(url).success(function(data){ 
  			 	deferred.resolve(data.matches);
+
  			 });
  			 return deferred.promise;
 	    }
@@ -42,9 +44,10 @@
 	    	 var url =  "http://localhost:9090/api1/search/" +  searchText +"?callback=JSON_CALLBACK"
 	    	 self.searchResults.length = 0;
  			 $http.jsonp(url).success(function(data){
- 			 	angular.forEach(data.hotels, function(value) {
-				  this.push(value);
+ 			 	angular.forEach(data, function(value) {
+				  this.push(value); 
 				}, self.searchResults ); 
+				self.showResultSection = true;
 		      });  
 	    }
 	    function selectedItemChange(item) {
