@@ -10,6 +10,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.IOContext;
@@ -46,13 +47,23 @@ public abstract class AbstractSearcher implements Searcher{
 	
 	protected abstract Match fromLuceneDoc(Document doc);
 	
+	protected abstract Sort getSort(HotelQuery hquery);
+	
 	@Override
 	public List<Match> search(HotelQuery hquery) {
 		ArrayList<Match> matches = new ArrayList<>();
-		try { 
-			 
-			TopDocs topDocs = searcher.search(buildLuceneQuery(hquery), 10); 
+		try { 		
+			TopDocs topDocs =  null;
+			if(hquery.getSortField() != null && !"".equalsIgnoreCase(hquery.getSortField()) && getSort(hquery) != null ){ 
+				topDocs = searcher.search(buildLuceneQuery(hquery), hquery.getPageSize() * hquery.getPageNo(), getSort(hquery)); 
+			}else{
+				topDocs = searcher.search(buildLuceneQuery(hquery), hquery.getPageSize()); 
+			}
+			int skipItems = hquery.getPageSize() * (hquery.getPageNo() -1 );
+			int skippedItems = 0;
 			for (ScoreDoc scoreDoc : topDocs.scoreDocs) { 
+				if(skippedItems++ < skipItems)
+					continue;
 				matches.add( fromLuceneDoc(searcher.doc(scoreDoc.doc))) ;
 			} 
 		} catch (Exception e) {

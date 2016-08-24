@@ -4,8 +4,11 @@ import java.util.ArrayList;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queries.function.FunctionQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.DisjunctionMaxQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TermQuery;
 
 import com.sample.search.model.Hotel;
@@ -18,15 +21,21 @@ public class HotelDB1Searcher extends AbstractSearcher{
 		super(indexDir); 
 	}
 
+	
 	@Override
 	protected Query buildLuceneQuery(HotelQuery hquery) {
 		ArrayList<Query> queries = new ArrayList<>();
+		
 		queries.add(new TermQuery(new Term("keywords_tok", hquery.getKeyword())));
 		queries.add(new TermQuery(new Term("name", hquery.getKeyword())));
-		queries.add(new TermQuery(new Term("city", hquery.getKeyword())));
-		queries.add(new TermQuery(new Term("country", hquery.getKeyword()))); 
-		DisjunctionMaxQuery dismaxQuery = new DisjunctionMaxQuery(queries, (float) 0.01);
+		queries.add(new BoostQuery(new TermQuery(new Term("city", hquery.getKeyword())), 2));
+		queries.add(new BoostQuery(new TermQuery(new Term("country", hquery.getKeyword())),2)); 
+		DisjunctionMaxQuery dismaxQuery = new DisjunctionMaxQuery(queries, (float) 0.1); 
 		return dismaxQuery;
+	}
+	
+	private FunctionQuery boostBookings(int bookings){
+		 return null;
 	}
 
 	@Override
@@ -38,6 +47,12 @@ public class HotelDB1Searcher extends AbstractSearcher{
 		int rating = Integer.parseInt( doc.get("rating").trim()); 
 		int bookings = Integer.parseInt( doc.get("bookings").trim()); 
 		return new Hotel(id, name, city, country, rating, bookings);
+	}
+
+
+	@Override
+	protected Sort getSort(HotelQuery hquery) { 
+		return null;
 	}
 
 }

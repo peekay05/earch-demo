@@ -43,9 +43,21 @@ public class HotelDB1SearchResource {
 	
 	@RequestMapping(value = "/search/{query}", method = RequestMethod.GET)
 	public String search(@PathVariable String query, 
+					@RequestParam(defaultValue="") String sortField, 
 					@RequestParam(defaultValue="") String city, 
+					@RequestParam(defaultValue="1") int pageNum, 
+					@RequestParam(defaultValue="10") int pageSize,
+					@RequestParam(defaultValue="true") boolean desc,
 					@RequestParam(defaultValue="") String callback ){
-		HotelQuery hotelQuery = new HotelQuery(query, ""); 
+		
+		HotelQuery hotelQuery = new HotelQuery(query, city); 
+		hotelQuery.setPageNo(pageNum);
+		hotelQuery.setPageSize(pageSize);
+		
+		if(!"".equalsIgnoreCase(sortField)){
+			hotelQuery.setSortField( sortField );
+			hotelQuery.setSortDesc(desc);
+		}
 		try {
 			return  toJsonP(hotelDB1Searcher.search(hotelQuery), callback);
 		} catch (Exception e) {

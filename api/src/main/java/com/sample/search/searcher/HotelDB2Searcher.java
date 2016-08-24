@@ -1,10 +1,10 @@
 package com.sample.search.searcher;
 
-import java.util.Set;
-
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 
 import com.sample.search.model.Hotel2;
@@ -27,16 +27,17 @@ public class HotelDB2Searcher extends AbstractSearcher{
 //	}
 
 
+	protected Sort getSort(HotelQuery hquery){
+		if(!"".equalsIgnoreCase(hquery.getSortField())){
+			return new Sort(new SortField(hquery.getSortField() +"_idx", SortField.Type.INT, hquery.isSortDesc()) ); 
+		}else
+			return null;
+	}
 
 	@Override
 	protected Query buildLuceneQuery(HotelQuery hquery) {
 		TermQuery tquery = new TermQuery(new Term("city", hquery.getCity().toLowerCase())); 
-//		if(sortByPrice){
-//			Sort sort = new Sort(new SortField("price", SortField.Type.SCORE, true) );
-//			topDocs = searcher.search(tquery, 10, sort ); 
-//		}else{
-//			topDocs = searcher.search(tquery, 10  );
-//		}
+		
 		return tquery;
 	}
 

@@ -43,16 +43,23 @@ public class HotelDB2SearchResource {
 	@RequestMapping(value = "/bycity/{city}", method = RequestMethod.GET)
 	public String search(@PathVariable String city, 
 					@RequestParam String apikey,
-					@RequestParam(defaultValue="false") boolean sortByPrice, 
-					@RequestParam(defaultValue="false") boolean desc 
-					) throws Exception{
+					@RequestParam(defaultValue="") String sortField, 
+					@RequestParam(defaultValue="1") int pageNum, 
+					@RequestParam(defaultValue="10") int pageSize,  
+					@RequestParam(defaultValue="true") boolean desc  ) throws Exception{
 	 
 		String response = "";
 		KeyStatus keyStatus = keyManager.processKey(apikey);
 		switch (keyStatus) {
 		case ACTIVE:
 			try {
-				HotelQuery hotelQuery = new HotelQuery("", city);
+				HotelQuery hotelQuery = new HotelQuery(city, city);
+				hotelQuery.setPageNo(pageNum);
+				hotelQuery.setPageSize(pageSize);
+				if(!"".equalsIgnoreCase(sortField)){
+					hotelQuery.setSortField( sortField );
+					hotelQuery.setSortDesc(desc);
+				}
 				response =  toJsonP(hotelDB2Searcher.search(hotelQuery ), "");
 			} catch (Exception e) {
 				throw new Exception("An error has occured");

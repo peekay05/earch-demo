@@ -1,6 +1,6 @@
 package com.sample.search.model;
 
-public class Hotel2 extends Match implements Comparable<Hotel2>{
+public class Hotel2 extends Match{
  	
 	private String city;
 	
@@ -54,11 +54,11 @@ public class Hotel2 extends Match implements Comparable<Hotel2>{
 		return "Hotel2 [id=" + id + ", city=" + city + ", price=" + price + ", type=" + type + "]";
 	}
 
-	@Override
-	public int compareTo(Hotel2 o) {
-		return this.getPrice().compareTo(o.getPrice()) ;
-		 
-	}
+//	@Override
+//	public int compareTo(Hotel2 o) {
+//		return this.getPrice().compareTo(o.getPrice()) ;
+//		 
+//	}
 	
 	
 	

@@ -6,4 +6,6 @@ api/bin
 ui-app/node_modules
 ui-app/app/bower_components
 ui-app/bower_components
+ui-app/.project
+api/build
 .DS_Store

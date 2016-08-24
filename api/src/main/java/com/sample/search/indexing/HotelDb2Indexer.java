@@ -2,7 +2,7 @@ package com.sample.search.indexing;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.SortedNumericDocValuesField;
+import org.apache.lucene.document.NumericDocValuesField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
@@ -22,7 +22,7 @@ public class HotelDb2Indexer extends AbstractCsvLuceneIndexer {
 		doc.add(new StringField("city",tokens[0], Store.YES));
 		doc.add(new TextField("type",tokens[2], Store.YES));
 		doc.add(new StoredField("price", Integer.parseInt( tokens[3])));
-		doc.add(new SortedNumericDocValuesField("price_idx", Integer.parseInt( tokens[3])));
+		doc.add(new NumericDocValuesField("price_idx", Integer.parseInt( tokens[3])));
 		return doc;
 	}
  

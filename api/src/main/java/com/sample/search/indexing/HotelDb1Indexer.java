@@ -4,9 +4,12 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.document.LongPoint;
+import org.apache.lucene.document.NumericDocValuesField;
+import org.apache.lucene.document.SortedNumericDocValuesField;
 import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.util.NumericUtils;
 
 
 public class HotelDb1Indexer extends AbstractCsvLuceneIndexer {
@@ -28,11 +31,14 @@ public class HotelDb1Indexer extends AbstractCsvLuceneIndexer {
 		doc.add(new StringField("country",tokens[3], Store.YES));
 		doc.add(new StoredField("rating",  Integer.parseInt(tokens[4])));
 		doc.add(new StoredField("bookings", Integer.parseInt( tokens[5])));
-		doc.add(new IntPoint("rating_idx",  Integer.parseInt(tokens[4])));
-		doc.add(new IntPoint("bookings_idx", Integer.parseInt( tokens[5])));
+//		document.add(new SortedNumericDocValuesField(name, NumericUtils.floatToSortableInt(-5.3f)));
+		doc.add(new NumericDocValuesField("rating_idx",  Integer.parseInt(tokens[4])));
+		doc.add(new NumericDocValuesField("bookings_idx", Integer.parseInt( tokens[5])));
 		return doc;
 	}
 
+	
+	  
 //	public static void main(String[] args) throws Exception{ 
 //		HotelDb1Indexer  luceneIndexer  = new HotelDb1Indexer("indexDir/hoteldb2", "dataDir/hotels.csv");
 //		luceneIndexer.buildIndex();

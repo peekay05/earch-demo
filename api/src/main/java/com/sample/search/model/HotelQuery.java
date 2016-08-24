@@ -4,9 +4,7 @@ public class HotelQuery {
 
 	private String keyword;
 	
-	private String city;
-	
-	private boolean sort;
+	private String city; 
 	
 	private String sortField;
 	
@@ -21,6 +19,8 @@ public class HotelQuery {
 		this.keyword = keyword;
 		this.city = city; 
 	}
+	
+	 
 	
 	public HotelQuery(String keyword, String city, int pageNo, int pageSize) {
 		super();
@@ -60,14 +60,6 @@ public class HotelQuery {
 
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
-	}
-
-	public boolean isSort() {
-		return sort;
-	}
-
-	public void setSort(boolean sort) {
-		this.sort = sort;
 	}
 
 	public String getSortField() {
