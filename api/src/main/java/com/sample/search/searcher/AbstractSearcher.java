@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -43,7 +44,7 @@ public abstract class AbstractSearcher implements Searcher{
 	}
 	
 	
-	protected abstract Query buildLuceneQuery(HotelQuery hquery);
+	protected abstract Query buildLuceneQuery(HotelQuery hquery)  throws ParseException;
 	
 	protected abstract Match fromLuceneDoc(Document doc);
 	

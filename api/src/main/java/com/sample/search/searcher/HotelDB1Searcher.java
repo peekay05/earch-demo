@@ -2,9 +2,11 @@ package com.sample.search.searcher;
 
 import java.util.ArrayList;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queries.function.FunctionQuery;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.DisjunctionMaxQuery;
 import org.apache.lucene.search.Query;
@@ -14,6 +16,7 @@ import org.apache.lucene.search.TermQuery;
 import com.sample.search.model.Hotel;
 import com.sample.search.model.HotelQuery;
 import com.sample.search.model.Match;
+import com.sample.search.query.CustomQuery;
 
 public class HotelDB1Searcher extends AbstractSearcher{
 
@@ -23,20 +26,20 @@ public class HotelDB1Searcher extends AbstractSearcher{
 
 	
 	@Override
-	protected Query buildLuceneQuery(HotelQuery hquery) {
+	protected Query buildLuceneQuery(HotelQuery hquery) throws ParseException {
 		ArrayList<Query> queries = new ArrayList<>();
-		
-		queries.add(new TermQuery(new Term("keywords_tok", hquery.getKeyword())));
+		QueryParser qp = new QueryParser("keywords_tok", new StandardAnalyzer()); 
+		queries.add(  qp.parse(hquery.getKeyword()));
 		queries.add(new TermQuery(new Term("name", hquery.getKeyword())));
 		queries.add(new BoostQuery(new TermQuery(new Term("city", hquery.getKeyword())), 2));
 		queries.add(new BoostQuery(new TermQuery(new Term("country", hquery.getKeyword())),2)); 
 		DisjunctionMaxQuery dismaxQuery = new DisjunctionMaxQuery(queries, (float) 0.1); 
-		return dismaxQuery;
+		return new CustomQuery(dismaxQuery);
 	}
 	
-	private FunctionQuery boostBookings(int bookings){
-		 return null;
-	}
+//	private FunctionQuery boostBookings(Query query){
+//		 return new FunctionQuery(query.);
+//	}
 
 	@Override
 	protected Match fromLuceneDoc(Document doc) {

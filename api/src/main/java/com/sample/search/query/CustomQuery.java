@@ -1,19 +1,23 @@
 package com.sample.search.query;
 
+import java.io.IOException;
+
+import org.apache.lucene.index.LeafReaderContext;
+import org.apache.lucene.queries.CustomScoreProvider;
 import org.apache.lucene.queries.CustomScoreQuery;
-import org.apache.lucene.queries.function.FunctionQuery;
 import org.apache.lucene.search.Query;
 
 public class CustomQuery extends CustomScoreQuery {
 
-	Query query;
-	
-	FunctionQuery fq;
-	
-	public CustomQuery(Query subQuery, FunctionQuery scoringQuery) {
-		super(subQuery, scoringQuery); 
+	public CustomQuery(Query subQuery) {
+		super(subQuery);
 	}
 
- 
+
+	protected CustomScoreProvider getCustomScoreProvider(
+			LeafReaderContext context) throws IOException {
+		return new RatingBoostedScoreProvider("rating", "bookings", context);
+	}
+
 
 }
